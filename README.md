@@ -16,7 +16,7 @@ This repository provides a pre-configured Dockerfile to set up a complete toolch
 * **Ready-to-use:** Pre-builds `rust/core.o` and `rust/kernel.o` to save time.
 
 ### How to use
-#### 1. Build the Image
+ 1. Build the Image
 ```bash
 docker build -t k7-rust-build .
 2. Run the Container
@@ -32,11 +32,11 @@ Included Software: The resulting image downloads and contains the Linux Kernel, 
 
 Third-Party: Other tools (Rust, LLVM) follow their respective open-source licenses.
 
-Deutsche Version
+## Deutsche Version
 Beschreibung
 Dieses Repository bietet ein vorkonfiguriertes Dockerfile, um eine vollständige Toolchain für "Rust-for-Linux" aufzusetzen. Es enthält alle notwendigen Abhängigkeiten wie LLVM, Clang und eine spezifische Rust-Version (1.78.0), um den Linux-Kernel 7 Quellcode für ARM64-Architekturen zu kompilieren und vorzubereiten.
 
-Funktionen
+### Funktionen  
 Architektur: Optimiert für ARM64 (Cross-Compilation).
 
 Kernel: Klont und bereitet automatisch den neuesten Linux-Kernel 7 mit Rust-Unterstützung vor.
@@ -45,15 +45,20 @@ Toolchain: Enthält rust-src, bindgen und LLVM/Clang-Integration.
 
 Einsatzbereit: Kompiliert rust/core.o und rust/kernel.o vorab, um Zeit zu sparen.
 
-Verwendung
+### Verwendung
 1. Image erstellen
-Bash
+``` Bash
 docker build -t k7-rust-build .
+```
 2. Container starten
-Mounte deinen lokalen Modul-Quellcode in das Verzeichnis /src:
 
-Bash
+``` Bash
+Mounte deinen lokalen Modul-Quellcode in das Verzeichnis /src:
+```
+``` Bash
 docker run -it -v $(pwd):/src k7-rust-build
+
+```
 Lizenz & Konformität
 Dockerfile: Dieses Build-Skript ist unter der GPLv2 lizenziert.
 
@@ -61,5 +66,5 @@ Enthaltene Software: Das resultierende Image lädt den Linux-Kernel herunter und
 
 Drittanbieter: Andere Tools (Rust, LLVM) unterliegen ihren jeweiligen Open-Source-Lizenzen.
 
-Author & Copyright
+## Author & Copyright
 Fabian Szukat Polygon Data UG Copyright: (c) 2026 Polygon Data UG
