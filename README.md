@@ -37,17 +37,10 @@ docker run -it -v $(pwd):/src k7-rust-build
 
 ```
 License / Lizenz
-EN:
 
 Dockerfile: Licensed under the GPLv2 License.
-
-
-Copyright: (c) 2026 Polygon Data UG
-
-
 Dockerfile: Lizenziert unter der GPLv2-Lizenz.
-
-Copyright: (c) 2026 Polygon Data UG
 
 Author
 Fabian Szukat Polygon Data UG
+Copyright: (c) 2026 Polygon Data UG
