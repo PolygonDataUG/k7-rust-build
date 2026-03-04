@@ -2,7 +2,7 @@
 # Author:        Fabian Szukat
 # Date:          04.03.2026
 # KernelVersion: 7 (Mainline / Rust-for-Linux)
-# License:       Dockerfile (MIT), Content (GPL-2.0)
+# License:       Dockerfile, Content (GPL-2.0)
 ############################################################
 
 FROM debian:trixie-slim
