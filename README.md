@@ -34,6 +34,8 @@ DE: Mounte deinen lokalen Modul-Quellcode in das Verzeichnis /src:
 
 Bash
 docker run -it -v $(pwd):/src k7-rust-build
+
+```
 License / Lizenz
 EN:
 
