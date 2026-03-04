@@ -21,9 +21,10 @@ This repository provides a pre-configured Dockerfile to set up a complete toolch
 docker build -t k7-rust-build .
 2. Run the Container
 Mount your local module source code into the /src directory:
-
-Bash
+```
+``` Bash
 docker run -it -v $(pwd):/src k7-rust-build
+```
 License & Compliance
 Dockerfile: This build script is licensed under GPLv2.
 
