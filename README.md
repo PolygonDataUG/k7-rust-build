@@ -7,6 +7,15 @@ Docker-based build environment for developing Rust Kernel Modules for Linux Kern
 ## English Version
 
 ### Description
+
+This container is a build environment only.
+It is not intended to run software in production.
+
+The image contains:
+- full Rust-for-Linux toolchain
+- prebuilt kernel artifacts
+- Module.symvers for external Rust kernel modules
+
 This repository provides a pre-configured Dockerfile to set up a complete toolchain for "Rust-for-Linux". It includes all necessary dependencies like LLVM, Clang, and a specific Rust version (1.78.0) to compile and prepare the Linux Kernel 7 source tree for ARM64 architectures.
 
 ### Features
