@@ -1,29 +1,103 @@
 #!/bin/bash
 
+###############################################
+# 1. Preps & Tool-Setup (Native statt Docker)
+###############################################
+mkdir -p "$(pwd)/reports"
+mkdir -p "$(pwd)/bin"
+mkdir -p "$(pwd)/.trivycache"
+
+# Container-Structure-Test Setup
+if [[ ! -f "$(pwd)/bin/container-structure-test" ]]; then
+    curl -LO https://storage.googleapis.com/container-structure-test/v1.16.0/container-structure-test-darwin-arm64
+    chmod +x container-structure-test-darwin-arm64
+    mv container-structure-test-darwin-arm64 "$(pwd)/bin/container-structure-test"
+fi
+
+# Hadolint Setup (Native Binary spart RAM gegenüber Docker Run)
+if [[ ! -f "$(pwd)/bin/hadolint" ]]; then
+    curl -LO https://github.com/hadolint/hadolint/releases/latest/download/hadolint-Darwin-arm64
+    chmod +x hadolint-Darwin-arm64
+    mv hadolint-Darwin-arm64 "$(pwd)/bin/hadolint"
+fi
+
+# Trivy Setup (Falls noch nicht im Pfad oder bin)
+if [[ ! -f "$(pwd)/bin/trivy" ]]; then
+    curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b "$(pwd)/bin" v0.49.1
+fi
+
 # Konfiguration
-REPORT_FILE="HADOLINT_AUDIT.md"
+REPORT_FILE="$(pwd)/reports/HADOLINT_AUDIT.md"
 CHECK_DATE=$(date '+%d.%m.%Y %H:%M:%S')
 
-# Markdown-Protokoll automatisch generieren
+###############################################
+# 2. Hadolint Audit (Statische Analyse)
+###############################################
 cat <<EOF > "$REPORT_FILE"
 # Automatisiertes Hadolint Audit Protokoll
 
 **Projekt:** k7-rust-build
 **Datum der Prüfung:** $CHECK_DATE
-**Status:** Statischer Snapshot für OpenSSF Best Practices
+**Status:** Statischer Snapshot
 
 ## 1. Analyse-Ergebnis (Hadolint Output)
-Dieses Protokoll wurde automatisch generiert. Es dokumentiert den Zustand des Dockerfiles zum Zeitpunkt des Releases.
-
 \`\`\`text
-$(docker run --rm -i hadolint/hadolint < Dockerfile 2>&1 || true)
+$("./bin/hadolint" Dockerfile 2>&1 || true)
 \`\`\`
 
-## 2. Konformitäts-Nachweis
-Dieses Dokument dient als unveränderlicher Nachweis für die Einhaltung der Best Practices im Bereich "Statische Analyse". Falls die obige Sektion keine Fehler anzeigt, entspricht das Dockerfile den aktuellen Standards.
-
 ---
-*Generiert durch das Polygon Data UG Audit-Tool.*
+*Generiert durch Audit-Tool.*
 EOF
 
-echo "Erfolg: '$REPORT_FILE' wurde automatisch erstellt."
+echo "Erfolg: '$REPORT_FILE' erstellt."
+
+###############################################
+# 3. Build & Structure Test
+###############################################
+# Vor dem Build aufräumen, um Platz zu schaffen
+docker image prune -f
+
+docker build -t k7-rust-build:latest .
+
+REPORT_JSON="test_results.json"
+"./bin/container-structure-test" test \
+    --image k7-rust-build:latest \
+    --config "$(pwd)/tests/tests.yaml" \
+    --output json > "$REPORT_JSON"
+
+# Dynamischer Report
+{
+    echo "## Dynamischer Test-Report"
+    echo "Zeitpunkt: $(date +'%d.%m.%Y %H:%M:%S')"
+    echo ""
+    PASS=$(jq '.Pass' "$REPORT_JSON")
+    FAIL=$(jq '.Fail' "$REPORT_JSON")
+
+    if [ "$FAIL" -eq 0 ]; then
+        echo "### Status: PASS ($PASS Tests bestanden)"
+    else
+        echo "### Status: FAIL ($FAIL Fehler gefunden!)"
+    fi
+
+    echo "| Test-Name | Status | Dauer |"
+    echo "| :--- | :--- | :--- |"
+    jq -r '.Results[] | "| \(.Name) | \(.Status) | \(.Duration)ms |"' "$REPORT_JSON"
+    echo ""
+    echo "---"
+} >> $(PWD)/reports/AUDIT_REPORT.md
+
+rm "$REPORT_JSON"
+
+###############################################
+# 4. Trivy CVE Scan (Ressourcenschonend)
+###############################################
+# --cache-dir und --scanners vuln reduzieren den RAM-Verbrauch massiv
+"./bin/trivy" image \
+    --severity HIGH,CRITICAL \
+    --format table \
+    --exit-code 0 \
+    --cache-dir "$(pwd)/.trivycache" \
+    --scanners vuln \
+    k7-rust-build:latest >> "$(pwd)/reports/CVE-Scan.md"
+
+echo "Scan abgeschlossen."

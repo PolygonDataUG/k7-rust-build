@@ -1,0 +1,32 @@
+schemaVersion: "2.0.0"
+
+# Prüft, ob wichtige Binaries im PATH sind
+commandTests:
+  - name: "Rust Check"
+    command: "rustc"
+    args: ["--version"]
+    expectedOutput: ["1.82.0"]
+  - name: "Bindgen Check"
+    command: "bindgen"
+    args: ["--version"]
+    expectedOutput: ["bindgen 0.69.5"]
+  - name: "LLVM Check"
+    command: "clang"
+    args: ["--version"]
+    expectedOutput: ["Debian"]
+
+# Prüft, ob die Verzeichnisse korrekt angelegt wurden
+fileExistenceTests:
+  - name: 'Kernel Source'
+    path: '/usr/src/linux'
+    shouldExist: true
+    permissions: 'drwxr-xr-x'
+  - name: 'Rust Core Objects'
+    path: '/usr/src/linux/rust/core.o'
+    shouldExist: true
+
+# Prüft Metadaten aus dem Dockerfile
+metadataTest:
+  labels:
+    - key: "org.opencontainers.image.licenses"
+      value: "GPL-2.0-only"
