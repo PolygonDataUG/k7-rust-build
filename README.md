@@ -1,6 +1,7 @@
 # k7-rust-build
 
-Docker-based build environment for developing Rust Kernel Modules for Linux Kernel 7 (ARM64).
+
+Setting up a development environment for Rust Kernel Modules is notoriously difficult due to strict version requirements for LLVM, bindgen, and the Rust compiler. k7-rust-build eliminates this "dependency hell" by providing a pre-configured, containerized environment. It allows developers to start writing and compiling ARM64 Linux Kernel 7 modules immediately, without manually configuring the kernel source tree or toolchain.
 
 ---
 
@@ -46,6 +47,8 @@ Beschreibung
 Dieses Repository bietet ein vorkonfiguriertes Dockerfile, um eine vollständige Toolchain für "Rust-for-Linux" aufzusetzen. Es enthält alle notwendigen Abhängigkeiten wie LLVM, Clang und eine spezifische Rust-Version (1.78.0), um den Linux-Kernel 7 Quellcode für ARM64-Architekturen zu kompilieren und vorzubereiten.
 
 ### Funktionen  
+Die Einrichtung einer Entwicklungsumgebung für Rust-Kernel-Module ist aufgrund strikter Versionsvorgaben für LLVM, bindgen und den Rust-Compiler extrem komplex. k7-rust-build beseitigt diese "Dependency Hell", indem es eine vorkonfigurierte Container-Umgebung bereitstellt. Entwickler können sofort mit dem Schreiben und Kompilieren von ARM64 Linux-Kernel-7-Modulen beginnen, ohne den Kernel-Quellbaum oder die Toolchain manuell konfigurieren zu müssen.
+
 Architektur: Optimiert für ARM64 (Cross-Compilation).
 
 Kernel: Klont und bereitet automatisch den neuesten Linux-Kernel 7 mit Rust-Unterstützung vor.
