@@ -17,7 +17,7 @@ LABEL org.opencontainers.image.version="1.0.0"
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 
-RUN apt-get update && apt-r install --no-install-recommends -y \
+RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential flex bison libelf-dev libssl-dev \
     clang llvm lld curl git kmod bc ca-certificates \
     pkg-config libncurses-dev wget python3 make && \
