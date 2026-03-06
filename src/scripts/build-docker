@@ -27,3 +27,5 @@ Dieses Dokument dient als unveränderlicher Nachweis für die Einhaltung der Bes
 EOF
 
 echo "Erfolg: '$REPORT_FILE' wurde automatisch erstellt."
+
+docker build -t rust-kernel-builder .
