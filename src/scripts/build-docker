@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Konfiguration
+REPORT_FILE="HADOLINT_AUDIT.md"
+CHECK_DATE=$(date '+%d.%m.%Y %H:%M:%S')
+
+# Markdown-Protokoll automatisch generieren
+cat <<EOF > "$REPORT_FILE"
+# Automatisiertes Hadolint Audit Protokoll
+
+**Projekt:** k7-rust-build
+**Datum der Prüfung:** $CHECK_DATE
+**Status:** Statischer Snapshot für OpenSSF Best Practices
+
+## 1. Analyse-Ergebnis (Hadolint Output)
+Dieses Protokoll wurde automatisch generiert. Es dokumentiert den Zustand des Dockerfiles zum Zeitpunkt des Releases.
+
+\`\`\`text
+$(docker run --rm -i hadolint/hadolint < Dockerfile 2>&1 || true)
+\`\`\`
+
+## 2. Konformitäts-Nachweis
+Dieses Dokument dient als unveränderlicher Nachweis für die Einhaltung der Best Practices im Bereich "Statische Analyse". Falls die obige Sektion keine Fehler anzeigt, entspricht das Dockerfile den aktuellen Standards.
+
+---
+*Generiert durch das Polygon Data UG Audit-Tool.*
+EOF
+
+echo "Erfolg: '$REPORT_FILE' wurde automatisch erstellt."
