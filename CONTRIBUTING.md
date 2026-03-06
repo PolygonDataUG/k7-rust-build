@@ -1,4 +1,33 @@
 # Contributing to k7-rust-build
+Thank you for your interest in contributing to this project. As an experienced IT specialist, I place high value on clean code, automated testing, and transparent documentation.
+
+## Submission Process
+Create an Issue
+Before making significant changes, please open an issue to discuss your proposal.
+
+## Branching Convention
+Create a new branch for your feature or bugfix (e.g., feature/new-function or fix/bug-description).
+
+## Code Quality & Linting
+Run the audit script ./generate_audit.sh before committing. Submissions will only be accepted if HADOLINT_AUDIT.md contains no new warnings for the Dockerfile.
+
+## Pull Request (PR)
+Describe exactly what was changed and why in the PR. Please reference the corresponding issue.
+
+## Technical Standards
+Since this project targets Rust-for-Linux and Kernel 7, the following requirements apply:
+
+Reproducibility: All changes to the Dockerfile must ensure build stability.
+
+Security: Avoid adding unnecessary packages. Always use --no-install-recommends.
+
+Kernel Compliance: Changes to the kernel configuration must be documented via scripts/config.
+
+## Code of Conduct
+I expect professional and respectful interaction, consistent with the standards maintained throughout my long-standing career as an administrator and developer.
+
+
+# Contributing to k7-rust-build
 
 Vielen Dank für dein Interesse, an diesem Projekt mitzuwirken.  
 Als erfahrener IT-Spezialist lege ich großen Wert auf sauberen Code, automatisierte Tests und eine nachvollziehbare Dokumentation.
