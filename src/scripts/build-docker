@@ -45,10 +45,6 @@ cat <<EOF > "$REPORT_FILE"
 $("./bin/hadolint" Dockerfile 2>&1 || true)
 \`\`\`
 
----
-*Generiert durch Audit-Tool.*
-EOF
-
 echo "Erfolg: '$REPORT_FILE' erstellt."
 
 ###############################################
@@ -101,3 +97,6 @@ rm "$REPORT_JSON"
     k7-rust-build:latest >> "$(pwd)/reports/CVE-Scan.md"
 
 echo "Scan abgeschlossen."
+=======
+echo "Erfolg: '$REPORT_FILE' wurde automatisch erstellt."
+
