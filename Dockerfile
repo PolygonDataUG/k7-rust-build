@@ -12,6 +12,9 @@ LABEL org.opencontainers.image.authors="Fabian Szukat"
 LABEL org.opencontainers.image.title="Linux Kernel 7 Rust Build Environment"
 LABEL org.opencontainers.image.licenses="GPL-2.0-only"
 LABEL org.opencontainers.image.description="Build-Umgebung für Rust-for-Linux Kernel 7 (ARM64)"
+LABEL org.opencontainers.image.version="1.0.0"
+LABEL org.opencontainers.image.revision="a1b2c3d"
+
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 
