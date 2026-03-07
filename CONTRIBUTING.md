@@ -24,7 +24,7 @@ Security: Avoid adding unnecessary packages. Always use --no-install-recommends.
 Kernel Compliance: Changes to the kernel configuration must be documented via scripts/config.
 
 ## Code of Conduct
-I expect professional and respectful interaction, consistent with the standards maintained throughout my long-standing career as an administrator and developer.
+I expect professional and respectful interaction. Detailed rules and reporting procedures can be found in our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Legal Requirements (DCO)
 
@@ -75,8 +75,8 @@ Da dieses Projekt auf **Rust-for-Linux** und **Kernel 7** ausgerichtet ist, gelt
   Änderungen an der Kernel-Konfiguration müssen über `scripts/config` dokumentiert werden.
 
 ## Verhaltenskodex
+Ich erwarte einen professionellen und respektvollen Umgang. Detaillierte Regeln und Verfahrensweisen findest du in unserem [Code of Conduct](CODE_OF_CONDUCT.md).
 
-Ich erwarte einen professionellen und respektvollen Umgang, wie er auch in meiner langjährigen Tätigkeit als Administrator und Entwickler Standard ist.
 ## Rechtliche Anforderungen (DCO)
 
 Um die rechtliche Integrität des Projekts sicherzustellen, wird das **Developer Certificate of Origin (DCO)** verwendet. Mit deinem Beitrag bestätigst du, dass du das Recht hast, diesen Code unter der Projektlizenz zu veröffentlichen.
