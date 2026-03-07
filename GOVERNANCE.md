@@ -38,7 +38,9 @@ To ensure the project's survival in the event that the Lead Maintainer is no lon
 - **Access Recovery:** Instructions and necessary credentials (including repository access and deployment keys) are stored in a secure offline location (physical lockbox/digital vault).
 - **Authorized Person:** A trusted individual has been briefed on how to access these credentials to hand them over to a successor or a trusted community member within one week of confirmation of incapacity.
 - **Legal Rights:** All necessary rights (DNS, Repository ownership) are intended to be transferred to the successor to ensure uninterrupted development and releases.
+
 ### Bus Factor
+
 Currently, the project has a bus factor of 1. To mitigate the associated risks, a comprehensive emergency access plan has been established (see "Project Continuity and Emergency Access"). The project is open to appointing additional maintainers in the future to increase the bus factor as the community grows.
 ---
 
@@ -84,4 +86,5 @@ Um das Fortbestehen des Projekts zu gewährleisten, falls der Lead Maintainer ni
 - **Rechtliche Nachfolge:** Alle notwendigen Rechte (DNS, Repository-Besitz) sollen auf den Nachfolger übertragen werden, um eine unterbrechungsfreie Entwicklung und Veröffentlichung zu garantieren.
 
 ### Bus-Faktor
+
 Aktuell weist das Projekt einen Bus-Faktor von 1 auf. Um die damit verbundenen Risiken zu minimieren, wurde ein umfassender Notfallplan erstellt (siehe „Projektkontinuität und Notfallzugriff“). Das Projekt ist offen dafür, in Zukunft weitere Maintainer zu ernennen, um den Bus-Faktor bei wachsender Community zu erhöhen.
