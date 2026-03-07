@@ -40,9 +40,8 @@ To ensure the project's survival in the event that the Lead Maintainer is no lon
 - **Legal Rights:** All necessary rights (DNS, Repository ownership) are intended to be transferred to the successor to ensure uninterrupted development and releases.
 
 ### Bus Factor
-
 Currently, the project has a bus factor of 1. To mitigate the associated risks, a comprehensive emergency access plan has been established (see "Project Continuity and Emergency Access"). The project is open to appointing additional maintainers in the future to increase the bus factor as the community grows.
----
+
 
 # Projekt-Governance – k7-rust-build
 
