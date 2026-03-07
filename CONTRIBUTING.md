@@ -26,6 +26,15 @@ Kernel Compliance: Changes to the kernel configuration must be documented via sc
 ## Code of Conduct
 I expect professional and respectful interaction, consistent with the standards maintained throughout my long-standing career as an administrator and developer.
 
+## Legal Requirements (DCO)
+
+To ensure the legal integrity of the project, we use the **Developer Certificate of Origin (DCO)**. By contributing, you certify that you have the right to submit your code under the project's license.
+
+Every commit must include a sign-off. This is done automatically by using the `-s` flag:
+`git commit -s -m "Your message"`
+
+By adding this line, you agree to the [Developer Certificate of Origin 1.1](https://developercertificate.org/).
+
 
 # Contributing to k7-rust-build
 
@@ -68,3 +77,11 @@ Da dieses Projekt auf **Rust-for-Linux** und **Kernel 7** ausgerichtet ist, gelt
 ## Verhaltenskodex
 
 Ich erwarte einen professionellen und respektvollen Umgang, wie er auch in meiner langjährigen Tätigkeit als Administrator und Entwickler Standard ist.
+## Rechtliche Anforderungen (DCO)
+
+Um die rechtliche Integrität des Projekts sicherzustellen, wird das **Developer Certificate of Origin (DCO)** verwendet. Mit deinem Beitrag bestätigst du, dass du das Recht hast, diesen Code unter der Projektlizenz zu veröffentlichen.
+
+Jeder Commit muss eine Signatur enthalten. Diese wird automatisch erstellt, wenn du das Flag `-s` verwendest:
+`git commit -s -m "Deine Nachricht"`
+
+Durch das Hinzufügen dieser Zeile bestätigst du das [Developer Certificate of Origin 1.1](https://developercertificate.org/).
