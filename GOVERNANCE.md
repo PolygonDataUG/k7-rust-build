@@ -31,6 +31,14 @@ Contributors may be promoted to Maintainers if they:
 ## Conflict Resolution
 If disagreements arise, a consensus-based solution is sought. If no consensus can be reached, the Lead Maintainer makes the final decision.
 
+## Project Continuity and Emergency Access
+
+To ensure the project's survival in the event that the Lead Maintainer is no longer able to manage it, the following measures have been taken:
+
+- **Access Recovery:** Instructions and necessary credentials (including repository access and deployment keys) are stored in a secure offline location (physical lockbox/digital vault).
+- **Authorized Person:** A trusted individual has been briefed on how to access these credentials to hand them over to a successor or a trusted community member within one week of confirmation of incapacity.
+- **Legal Rights:** All necessary rights (DNS, Repository ownership) are intended to be transferred to the successor to ensure uninterrupted development and releases.
+
 ---
 
 # Projekt-Governance – k7-rust-build
@@ -65,3 +73,11 @@ Mitwirkende können zu Maintainern ernannt werden, wenn sie:
 
 ## Konfliktlösung
 Sollten Unstimmigkeiten auftreten, wird eine Lösung durch Konsens angestrebt. Kommt kein Konsens zustande, trifft der Lead Maintainer die finale Entscheidung.
+
+## Projektkontinuität und Notfallzugriff
+
+Um das Fortbestehen des Projekts zu gewährleisten, falls der Lead Maintainer nicht mehr in der Lage ist, es zu verwalten, wurden folgende Maßnahmen getroffen:
+
+- **Zugriffssicherung:** Anweisungen und notwendige Zugangsdaten (einschließlich Repository-Zugriff und Deployment-Keys) sind an einem sicheren Offline-Ort (physischer Tresor/digitaler Safe) hinterlegt.
+- **Autorisierte Person:** Eine Vertrauensperson wurde angewiesen, wie im Notfall auf diese Daten zuzugreifen ist, um sie innerhalb einer Woche nach Feststellung der Arbeitsunfähigkeit an einen Nachfolger oder ein vertrauenswürdiges Community-Mitglied zu übergeben.
+- **Rechtliche Nachfolge:** Alle notwendigen Rechte (DNS, Repository-Besitz) sollen auf den Nachfolger übertragen werden, um eine unterbrechungsfreie Entwicklung und Veröffentlichung zu garantieren.
