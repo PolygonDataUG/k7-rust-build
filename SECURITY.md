@@ -5,7 +5,12 @@
 ### Security Requirements: What to Expect
 - **Base Image Updates:** We aim to update the base image regularly to include the latest security patches.
 - **Vulnerability Scanning:** We use automated tools (e.g., Hadolint) to ensure the Dockerfile follows security best practices.
-- **Scope:** This project provides the build environment only. It does not guarantee the security of the kernel code compiled within it.
+- **Toolchain Integrity:** Rust-for-Linux toolchains are pulled from verified sources.
+
+### What NOT to Expect (Security Boundaries)
+- **Kernel Security:** This project provides the *build environment*. We do not guarantee the security of the kernel code you compile with it.
+- **Third-Party Code:** We do not audit external Rust crates or drivers added by the user.
+- **Hotfixes:** Security fixes are integrated during the next build cycle; we do not provide "live patching" for running containers.
 
 ### Reporting a Vulnerability
 If you discover a security vulnerability, please report it via a **GitLab Issue**.
@@ -22,7 +27,12 @@ We provide security updates for the latest version of this build environment.
 ### Sicherheitsanforderungen: Was zu erwarten ist
 - **Base-Image-Updates:** Wir streben an, das Basis-Image regelmäßig zu aktualisieren, um die neuesten Sicherheitspatches zu integrieren.
 - **Schwachstellen-Scans:** Wir nutzen automatisierte Tools (z. B. Hadolint), um sicherzustellen, dass das Dockerfile Sicherheits-Best-Practices folgt.
-- **Umfang:** Dieses Projekt stellt nur die Build-Umgebung bereit. Es garantiert nicht die Sicherheit des Kernel-Codes, der darin kompiliert wird.
+- **Integrität der Toolchain:** Rust-for-Linux Toolchains werden aus verifizierten Quellen bezogen.
+
+### Was NICHT zu erwarten ist (Sicherheitsgrenzen)
+- **Kernel-Sicherheit:** Dieses Projekt stellt die *Build-Umgebung* bereit. Wir garantieren nicht die Sicherheit des Kernel-Codes, den du damit kompilierst.
+- **Drittanbieter-Code:** Wir auditieren keine externen Rust-Crates oder Treiber, die durch den Nutzer hinzugefügt werden.
+- **Hotfixes:** Sicherheitsfixes werden beim nächsten Build-Zyklus integriert; wir bieten kein "Live-Patching" für laufende Container an.
 
 ### Meldung einer Sicherheitslücke
 Wenn du eine Sicherheitslücke entdeckst, melde diese bitte über ein **GitLab Issue**.
