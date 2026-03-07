@@ -1,9 +1,14 @@
-# Security Policy / Sicherheitshinweise
+# Security Policy / Sicherheitsrichtlinie
 
 ## English
 
+### Security Requirements: What to Expect
+- **Base Image Updates:** We aim to update the base image regularly to include the latest security patches.
+- **Vulnerability Scanning:** We use automated tools (e.g., Hadolint) to ensure the Dockerfile follows security best practices.
+- **Scope:** This project provides the build environment only. It does not guarantee the security of the kernel code compiled within it.
+
 ### Reporting a Vulnerability
-If you discover a security vulnerability, please report it via a **GitLab Issue**. 
+If you discover a security vulnerability, please report it via a **GitLab Issue**.
 
 **Note:** If the "Confidential" checkbox is not available, please do not post sensitive details directly. Instead, create a brief issue titled "Security Inquiry" and we will contact you to provide a secure channel for communication.
 
@@ -13,6 +18,11 @@ We provide security updates for the latest version of this build environment.
 ---
 
 ## Deutsch
+
+### Sicherheitsanforderungen: Was zu erwarten ist
+- **Base-Image-Updates:** Wir streben an, das Basis-Image regelmäßig zu aktualisieren, um die neuesten Sicherheitspatches zu integrieren.
+- **Schwachstellen-Scans:** Wir nutzen automatisierte Tools (z. B. Hadolint), um sicherzustellen, dass das Dockerfile Sicherheits-Best-Practices folgt.
+- **Umfang:** Dieses Projekt stellt nur die Build-Umgebung bereit. Es garantiert nicht die Sicherheit des Kernel-Codes, der darin kompiliert wird.
 
 ### Meldung einer Sicherheitslücke
 Wenn du eine Sicherheitslücke entdeckst, melde diese bitte über ein **GitLab Issue**.
