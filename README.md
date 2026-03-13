@@ -1,5 +1,9 @@
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12099/badge)](https://www.bestpractices.dev/projects/12099)
-  
+
+  [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12099/badge)](https://www.bestpractices.dev/projects/12099)
+
+
+  [![OpenSSF Baseline](https://www.bestpractices.dev/projects/12099/baseline)](https://www.bestpractices.dev/projects/12099)
+
 # k7-rust-build
 
 Setting up a development environment for Rust Kernel Modules is notoriously difficult due to strict version requirements for LLVM, bindgen, and the Rust compiler. k7-rust-build eliminates this "dependency hell" by providing a pre-configured, containerized environment. It allows developers to start writing and compiling ARM64 Linux Kernel 7 modules immediately, without manually configuring the kernel source tree or toolchain.

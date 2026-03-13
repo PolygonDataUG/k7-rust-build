@@ -7,6 +7,10 @@
 - **Vulnerability Scanning:** We use automated tools (e.g., Hadolint) to ensure the Dockerfile follows security best practices.
 - **Toolchain Integrity:** Rust-for-Linux toolchains are pulled from verified sources.
 
+
+### Secure Design
+We follow the principle of Least Privilege (e.g., running containers as non-root) and Attack Surface Reduction by removing unnecessary tools from the final image.
+
 ### What NOT to Expect (Security Boundaries)
 - **Kernel Security:** This project provides the *build environment*. We do not guarantee the security of the kernel code you compile with it.
 - **Third-Party Code:** We do not audit external Rust crates or drivers added by the user.
@@ -34,6 +38,11 @@ We provide security updates for the latest version of this build environment.
 - **Drittanbieter-Code:** Wir auditieren keine externen Rust-Crates oder Treiber, die durch den Nutzer hinzugefügt werden.
 - **Hotfixes:** Sicherheitsfixes werden beim nächsten Build-Zyklus integriert; wir bieten kein "Live-Patching" für laufende Container an.
 
+
+### Sicheres Design
+Wir folgen dem Prinzip der minimalen Rechtevergabe (z. B. Ausführen von Containern als Non-Root) und der Reduzierung der Angriffsfläche, indem unnötige Werkzeuge aus dem finalen Image entfernt werden.
+
+
 ### Meldung einer Sicherheitslücke
 Wenn du eine Sicherheitslücke entdeckst, melde diese bitte über ein **GitLab Issue**.
 
@@ -42,3 +51,4 @@ Falls die Option "Vertraulich" (Confidential) nicht verfügbar ist, poste bitte 
 
 ### Unterstützte Versionen
 Wir unterstützen aktiv die jeweils neueste Version dieser Build-Umgebung und stellen dafür Sicherheitsupdates bereit.
+
