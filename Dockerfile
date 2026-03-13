@@ -5,7 +5,7 @@
 # License:       Dockerfile, Content (GPL-2.0)
 ############################################################
 
-FROM debian:trixie-slim
+FROM debian:trixie-slim AS base
 
 # Metadaten für das Image-Manifest
 LABEL org.opencontainers.image.authors="Fabian Szukat"
@@ -49,22 +49,28 @@ WORKDIR /usr/src
 # Wir nehmen nur die letzten Commits (spart Platz/Zeit)
 RUN git clone --depth 1 https://github.com/Rust-for-Linux/linux.git
 
+
+
+
+
 WORKDIR /usr/src/linux
-RUN mkdir -p /build/arm
-RUN mkdir -p /build/arm64
-RUN mkdir -p /build/riscv
-RUN mkdir -p /build/loongarch
+
 RUN mkdir -p /build/s390
-RUN mkdir -p /build/s390 
+
+
+
+
+FROM base AS build-arm64
+# arm64
 
 # Konfiguration
+RUN mkdir -p /build/arm64
+
 RUN make O=/build/arm64 ARCH=arm64 LLVM=1 defconfig && \
     ./scripts/config --file /build/arm64/.config --enable CONFIG_RUST && \
     ./scripts/config --file /build/arm64/.config --enable RUST_IS_AVAILABLE && \
     ./scripts/config --file /build/arm64/.config --enable CONFIG_64BIT && \
     make O=/build/arm64 ARCH=arm64 LLVM=1 olddefconfig
-
-
 
 ## 1. Grundlegende Vorbereitung
 # RUN make ARCH=arm64 LLVM=1 olddefconfig
@@ -93,6 +99,132 @@ RUN make O=/build/arm64 ARCH=arm64 LLVM=1 rustavailable && \
     touch /build/arm64/Module.symvers && \
 # 5. Finale Vorbereitung für Module
     make O=/build/arm64 ARCH=arm64 LLVM=1 modules_prepare
+
+WORKDIR /src
+
+CMD ["bash"]
+
+FROM base AS build-arm
+# arm
+# Konfiguration
+RUN mkdir -p /build/arm
+RUN make O=/build/arm ARCH=arm LLVM=1 defconfig && \
+    ./scripts/config --file /build/arm/.config --enable CONFIG_RUST && \
+    ./scripts/config --file /build/arm/.config --enable RUST_IS_AVAILABLE && \
+    ./scripts/config --file /build/arm/.config --enable CONFIG_64BIT && \
+    make O=/build/arm ARCH=arm LLVM=1 olddefconfig
+
+## 1. Grundlegende Vorbereitung
+# RUN make ARCH=arm64 LLVM=1 olddefconfig
+
+# 2. Rust-Objekte bauen (erzeugt rust/core.o, rust/kernel.o etc.)
+RUN make O=/build/arm ARCH=arm LLVM=1 "-j$(nproc)" rust/
+
+# 3. Den Kernel-Tree zwingen, die Symbole aus den Rust-Objekten in die Module.symvers zu schreiben
+# Das ist der entscheidende Befehl, der die Warnungen im Keim erstickt:
+# 1. Den Kernel-Kern (vmlinux) bauen
+RUN make O=/build/arm ARCH=arm LLVM=1 -j$(nproc) vmlinux && \
+# 2. Vorbereitung für die Module (Header/Scripts)
+    make O=/build/arm ARCH=arm LLVM=1 modules_prepare && \
+# 3. Die Module selbst bauen
+    make O=/build/arm ARCH=arm LLVM=1 -j$(nproc) modules
+
+
+# DER FIX: Wir bauen die Rust-Teile UND erstellen eine initiale Symbol-Datei
+# 1. Prüfen, ob die Rust-Umgebung (Toolchain/Bindgen) passt
+RUN make O=/build/arm ARCH=arm LLVM=1 rustavailable && \
+# 2. Den Build vorbereiten (generiert u.a. bounds.h, asm-offsets.h)
+    make O=/build/arm ARCH=arm LLVM=1 "-j$(nproc)" prepare && \
+# 3. Den Rust-spezifischen Teil (core, alloc, bindings) bauen
+    make O=/build/arm ARCH=arm LLVM=1 "-j$(nproc)" rust/ && \
+# 4. Symbol-Tabelle erstellen (WICHTIG: im Output-Ordner!)
+    touch /build/arm/Module.symvers && \
+# 5. Finale Vorbereitung für Module
+    make O=/build/arm ARCH=arm LLVM=1 modules_prepare
+
+WORKDIR /src
+
+CMD ["bash"]
+
+FROM base AS build-riscv
+# riscv
+# Konfiguration
+RUN mkdir -p /build/riscv
+RUN make O=/build/riscv ARCH=riscv LLVM=1 defconfig && \
+    ./scripts/config --file /build/riscv/.config --enable CONFIG_RUST && \
+    ./scripts/config --file /build/riscv/.config --enable RUST_IS_AVAILABLE && \
+    ./scripts/config --file /build/riscv/.config --enable CONFIG_64BIT && \
+    make O=/build/riscv ARCH=arm LLVM=1 olddefconfig
+
+## 1. Grundlegende Vorbereitung
+# RUN make ARCH=arm64 LLVM=1 olddefconfig
+
+# 2. Rust-Objekte bauen (erzeugt rust/core.o, rust/kernel.o etc.)
+RUN make O=/build/riscv ARCH=riscv LLVM=1 "-j$(nproc)" rust/
+
+# 3. Den Kernel-Tree zwingen, die Symbole aus den Rust-Objekten in die Module.symvers zu schreiben
+# Das ist der entscheidende Befehl, der die Warnungen im Keim erstickt:
+# 1. Den Kernel-Kern (vmlinux) bauen
+RUN make O=/build/riscv ARCH=riscv LLVM=1 -j$(nproc) vmlinux && \
+# 2. Vorbereitung für die Module (Header/Scripts)
+    make O=/build/riscv ARCH=riscv LLVM=1 modules_prepare && \
+# 3. Die Module selbst bauen
+    make O=/build/riscv ARCH=riscv LLVM=1 -j$(nproc) modules
+
+
+# DER FIX: Wir bauen die Rust-Teile UND erstellen eine initiale Symbol-Datei
+# 1. Prüfen, ob die Rust-Umgebung (Toolchain/Bindgen) passt
+RUN make O=/build/riscv ARCH=riscv LLVM=1 rustavailable && \
+# 2. Den Build vorbereiten (generiert u.a. bounds.h, asm-offsets.h)
+    make O=/build/riscv ARCH=riscv LLVM=1 "-j$(nproc)" prepare && \
+# 3. Den Rust-spezifischen Teil (core, alloc, bindings) bauen
+    make O=/build/riscv ARCH=riscv LLVM=1 "-j$(nproc)" rust/ && \
+# 4. Symbol-Tabelle erstellen (WICHTIG: im Output-Ordner!)
+    touch /build/riscv/Module.symvers && \
+# 5. Finale Vorbereitung für Module
+    make O=/build/riscv ARCH=riscv LLVM=1 modules_prepare
+
+WORKDIR /src
+
+CMD ["bash"]
+
+FROM base AS build-loongarch
+# loongarch
+# Konfiguration loongarch
+RUN mkdir -p /build/loongarch
+RUN make O=/build/loongarch ARCH=loongarch LLVM=1 defconfig && \
+    ./scripts/config --file /build/loongarch/.config --enable CONFIG_RUST && \
+    ./scripts/config --file /build/loongarch/.config --enable RUST_IS_AVAILABLE && \
+    ./scripts/config --file /build/loongarch/.config --enable CONFIG_64BIT && \
+    make O=/build/loongarch ARCH=loongarch LLVM=1 olddefconfig
+
+## 1. Grundlegende Vorbereitung
+# RUN make ARCH=arm64 LLVM=1 olddefconfig
+
+# 2. Rust-Objekte bauen (erzeugt rust/core.o, rust/kernel.o etc.)
+RUN make O=/build/loongarch ARCH=loongarch LLVM=1 "-j$(nproc)" rust/
+
+# 3. Den Kernel-Tree zwingen, die Symbole aus den Rust-Objekten in die Module.symvers zu schreiben
+# Das ist der entscheidende Befehl, der die Warnungen im Keim erstickt:
+# 1. Den Kernel-Kern (vmlinux) bauen
+RUN make O=/build/loongarch ARCH=loongarch LLVM=1 -j$(nproc) vmlinux && \
+# 2. Vorbereitung für die Module (Header/Scripts)
+    make O=/build/loongarch ARCH=loongarch LLVM=1 modules_prepare && \
+# 3. Die Module selbst bauen
+    make O=/build/loongarch ARCH=loongarch LLVM=1 -j$(nproc) modules
+
+
+# DER FIX: Wir bauen die Rust-Teile UND erstellen eine initiale Symbol-Datei
+# 1. Prüfen, ob die Rust-Umgebung (Toolchain/Bindgen) passt
+RUN make O=/build/loongarch ARCH=loongarch LLVM=1 rustavailable && \
+# 2. Den Build vorbereiten (generiert u.a. bounds.h, asm-offsets.h)
+    make O=/build/loongarch ARCH=loongarch LLVM=1 "-j$(nproc)" prepare && \
+# 3. Den Rust-spezifischen Teil (core, alloc, bindings) bauen
+    make O=/build/loongarch ARCH=loongarch LLVM=1 "-j$(nproc)" rust/ && \
+# 4. Symbol-Tabelle erstellen (WICHTIG: im Output-Ordner!)
+    touch /build/loongarch/Module.symvers && \
+# 5. Finale Vorbereitung für Module
+    make O=/build/loongarch ARCH=loongarch LLVM=1 modules_prepare
 
 WORKDIR /src
 
