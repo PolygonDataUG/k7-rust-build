@@ -1,87 +1,277 @@
-
-  [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12099/badge)](https://www.bestpractices.dev/projects/12099)
-
-
-  [![OpenSSF Baseline](https://www.bestpractices.dev/projects/12099/baseline)](https://www.bestpractices.dev/projects/12099)
-
 # k7-rust-build
 
-Setting up a development environment for Rust Kernel Modules is notoriously difficult due to strict version requirements for LLVM, bindgen, and the Rust compiler. k7-rust-build eliminates this "dependency hell" by providing a pre-configured, containerized environment. It allows developers to start writing and compiling ARM64 Linux Kernel 7 modules immediately, without manually configuring the kernel source tree or toolchain.
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12099/badge)](https://www.bestpractices.dev/projects/12099)  
+[![OpenSSF Baseline](https://www.bestpractices.dev/projects/12099/baseline)](https://www.bestpractices.dev/projects/12099)
 
 ---
 
-## English Version
+## Overview
 
-### Description
+Setting up a development environment for **Rust Kernel Modules** is notoriously difficult due to strict version requirements for LLVM, bindgen, and the Rust compiler.
 
-This container is a build environment only.
-It is not intended to run software in production.
+**k7-rust-build** eliminates this dependency hell by providing a fully containerized and pre-configured development environment.
+
+The container includes a prepared **Rust-for-Linux kernel build tree** and allows developers to immediately start building **external Rust kernel modules** without manually configuring the kernel toolchain.
+
+---
+
+# English Version
+
+## Description
+
+This container provides a **build environment only**.
+
+It is **not intended for production runtime use**.
 
 The image contains:
-- full Rust-for-Linux toolchain
-- prebuilt kernel artifacts
-- Module.symvers for external Rust kernel modules
 
-This repository provides a pre-configured Dockerfile to set up a complete toolchain for "Rust-for-Linux". It includes all necessary dependencies like LLVM, Clang, and a specific Rust version (1.78.0) to compile and prepare the Linux Kernel 7 source tree for ARM64 architectures.
+- Rust-for-Linux toolchain
+- LLVM / Clang toolchain
+- multiple cross-compilers
+- prepared Linux kernel build trees
+- `Module.symvers` for external kernel modules
+- prebuilt Rust kernel objects
 
-### Features
-* **Architecture:** Optimized for ARM64 (cross-compilation).
-* **Kernel:** Automatically clones and prepares the latest Rust-enabled Linux Kernel 7.
-* **Toolchain:** Includes `rust-src`, `bindgen`, and LLVM/Clang integration.
-* **Ready-to-use:** Pre-builds `rust/core.o` and `rust/kernel.o` to save time.
+The Dockerfile automatically clones the **Rust-for-Linux kernel repository** and prepares the kernel build system for multiple architectures.
 
-### How to use
- 1. Build the Image
+---
+
+## Supported Architectures
+
+The container prepares kernel build directories for:
+
+- ARM64
+- ARM
+- RISC-V
+- LoongArch
+- s390
+- x86_64
+
+Each architecture receives its own prepared kernel build tree in:
+
+```
+/build/<architecture>
+```
+
+Example:
+
+```
+/build/arm64
+/build/x86_64
+/build/riscv
+```
+
+These directories include the files required to build **external Rust kernel modules**.
+
+---
+
+## Toolchain
+
+The container installs:
+
+- Rust **1.82.0**
+- `rust-src`
+- `bindgen-cli 0.69.5`
+- LLVM / Clang
+- multiple cross-compilers
+- Linux kernel build dependencies
+
+The Rust toolchain is installed via **rustup** and configured automatically.
+
+---
+
+## Kernel Source
+
+The kernel source is cloned from:
+
+https://github.com/Rust-for-Linux/linux
+
+Only the latest commit is cloned to keep the image smaller.
+
+---
+
+## Prebuilt Kernel Artifacts
+
+During the image build process the container compiles:
+
+- `vmlinux`
+- kernel modules
+- `rust/core.o`
+- `rust/kernel.o`
+
+This significantly reduces compile time when building external modules.
+
+The build process also generates:
+
+```
+Module.symvers
+```
+
+which is required for external kernel module builds.
+
+---
+
+## Build the Image
+
 ```bash
 docker build -t k7-rust-build .
-2. Run the Container
-Mount your local module source code into the /src directory:
 ```
-``` Bash
+
+---
+
+## Run the Container
+
+Mount your local module source directory into `/src`.
+
+Example:
+
+```bash
 docker run -it -v $(pwd):/src k7-rust-build
 ```
-License & Compliance
-Dockerfile: This build script is licensed under GPLv2.
 
-Included Software: The resulting image downloads and contains the Linux Kernel, which is also licensed under GPLv2.
+Inside the container you can build kernel modules against the prepared kernel build trees.
 
-Third-Party: Other tools (Rust, LLVM) follow their respective open-source licenses.
+---
 
-## Deutsche Version
-Beschreibung
-Dieses Repository bietet ein vorkonfiguriertes Dockerfile, um eine vollständige Toolchain für "Rust-for-Linux" aufzusetzen. Es enthält alle notwendigen Abhängigkeiten wie LLVM, Clang und eine spezifische Rust-Version (1.78.0), um den Linux-Kernel 7 Quellcode für ARM64-Architekturen zu kompilieren und vorzubereiten.
+## License & Compliance
 
-### Funktionen  
-Die Einrichtung einer Entwicklungsumgebung für Rust-Kernel-Module ist aufgrund strikter Versionsvorgaben für LLVM, bindgen und den Rust-Compiler extrem komplex. k7-rust-build beseitigt diese "Dependency Hell", indem es eine vorkonfigurierte Container-Umgebung bereitstellt. Entwickler können sofort mit dem Schreiben und Kompilieren von ARM64 Linux-Kernel-7-Modulen beginnen, ohne den Kernel-Quellbaum oder die Toolchain manuell konfigurieren zu müssen.
+### Dockerfile
 
-Architektur: Optimiert für ARM64 (Cross-Compilation).
+The Dockerfile is licensed under:
 
-Kernel: Klont und bereitet automatisch den neuesten Linux-Kernel 7 mit Rust-Unterstützung vor.
+GPL-2.0-only
 
-Toolchain: Enthält rust-src, bindgen und LLVM/Clang-Integration.
+### Included Software
 
-Einsatzbereit: Kompiliert rust/core.o und rust/kernel.o vorab, um Zeit zu sparen.
+The container downloads the **Linux Kernel**, which is licensed under:
 
-### Verwendung
-1. Image erstellen
-``` Bash
+GPLv2
+
+### Third Party Components
+
+Other included tools follow their own licenses:
+
+- Rust → MIT / Apache 2.0
+- LLVM / Clang → Apache 2.0 with LLVM exceptions
+
+---
+
+# Deutsche Version
+
+## Beschreibung
+
+Dieses Container-Image stellt eine **vorkonfigurierte Build-Umgebung für Rust-for-Linux Kernelmodule** bereit.
+
+Das Ziel ist es, die komplexe Einrichtung der Toolchain zu vermeiden, die normalerweise notwendig ist, um **Rust-Kernelmodule zu kompilieren**.
+
+Der Container enthält:
+
+- Rust Toolchain
+- LLVM / Clang
+- mehrere Cross-Compiler
+- vorbereitete Kernel-Build-Umgebungen
+- `Module.symvers`
+- vorkompilierte Rust Kernel-Objekte
+
+Der Linux Kernel wird automatisch aus dem **Rust-for-Linux Repository** geklont und vorbereitet.
+
+---
+
+## Unterstützte Architekturen
+
+Der Container bereitet Kernel-Builds für folgende Architekturen vor:
+
+- ARM64
+- ARM
+- RISC-V
+- LoongArch
+- s390
+- x86_64
+
+Für jede Architektur existiert ein eigenes Build-Verzeichnis:
+
+```
+/build/<architektur>
+```
+
+Beispiele:
+
+```
+/build/arm64
+/build/x86_64
+/build/riscv
+```
+
+Diese Verzeichnisse können zum Kompilieren externer Kernelmodule verwendet werden.
+
+---
+
+## Toolchain
+
+Der Container installiert:
+
+- Rust **1.82.0**
+- `rust-src`
+- `bindgen-cli 0.69.5`
+- LLVM / Clang
+- Kernel Build Tools
+- Cross Compiler
+
+Die Rust Installation erfolgt automatisch über **rustup**.
+
+---
+
+## Kernel Quelle
+
+Der Kernel wird automatisch aus folgendem Repository geklont:
+
+https://github.com/Rust-for-Linux/linux
+
+Es wird nur der aktuelle Commit geladen, um die Imagegröße klein zu halten.
+
+---
+
+## Vorkompilierte Kernel Artefakte
+
+Während des Docker-Builds werden bereits folgende Artefakte erzeugt:
+
+- `vmlinux`
+- Kernel Module
+- `rust/core.o`
+- `rust/kernel.o`
+
+Zusätzlich wird erzeugt:
+
+```
+Module.symvers
+```
+
+Diese Datei ist notwendig, um externe Kernelmodule zu kompilieren.
+
+---
+
+## Image erstellen
+
+```bash
 docker build -t k7-rust-build .
 ```
-2. Container starten
 
-``` Bash
-Mounte deinen lokalen Modul-Quellcode in das Verzeichnis /src:
-```
-``` Bash
+---
+
+## Container starten
+
+Lokalen Modul-Code nach `/src` mounten:
+
+```bash
 docker run -it -v $(pwd):/src k7-rust-build
-
 ```
-Lizenz & Konformität
-Dockerfile: Dieses Build-Skript ist unter der GPLv2 lizenziert.
 
-Enthaltene Software: Das resultierende Image lädt den Linux-Kernel herunter und enthält diesen, welcher ebenfalls unter der GPLv2 lizenziert ist.
+Danach können Rust Kernelmodule direkt im Container gebaut werden.
 
-Drittanbieter: Andere Tools (Rust, LLVM) unterliegen ihren jeweiligen Open-Source-Lizenzen.
+---
 
 ## Author & Copyright
-Fabian Szukat Polygon Data UG Copyright: (c) 2026 Polygon Data UG
+
+Author: **Fabian Szukat**  
+Company: **Polygon Data UG**  
+Copyright: **© 2026 Polygon Data UG**
